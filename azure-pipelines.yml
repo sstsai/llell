@@ -1,7 +1,3 @@
-# C/C++ with GCC
-- task: CMake@1
-  inputs:
-    cmakeArgs: 
 # Build your C/C++ project with GCC using make.
 # Add steps that publish test results, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/c-cpp/gcc
@@ -13,6 +9,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: |
-    cmake
-  displayName: 'cmake'
+# C/C++ with GCC
+- task: CMake@1
+  inputs:
+    cmakeArgs: 
