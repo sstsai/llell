@@ -5,21 +5,28 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-    linux:
-      imageName: "ubuntu-20.04"
-    mac:
-      imageName: "macOS-latest"
-    windows:
-      imageName: "windows-latest"
-  maxParallel: 3
-
-pool:
-  vmImage: $(imageName)
-
-steps:
-# C/C++ with GCC
-- task: CMake@1
-  inputs:
-    cmakeArgs: 
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  # C/C++ with GCC
+  - task: CMake@1
+    inputs:
+      cmakeArgs: 
+- job: macOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  # C/C++ with GCC
+  - task: CMake@1
+    inputs:
+      cmakeArgs: 
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-20.04'
+  steps:
+  # C/C++ with GCC
+  - task: CMake@1
+    inputs:
+      cmakeArgs: 
