@@ -10,11 +10,17 @@ jobs:
   strategy:
     matrix:
       linux:
-        imageName: "ubuntu-16.04"
+        imageName: "ubuntu-20.04"
+        vcpkgRsp: "vcpkg-x64-linux.txt"
+        cmakeChoice: CMakeListsTxtAdvanced
       mac:
-        imageName: "macos-10.14"
+        imageName: "macos-latest"
+        vcpkgRsp: "vcpkg-x64-osx.txt"
+        cmakeChoice: CMakeListsTxtAdvanced
       windows:
-        imageName: "vs2017-win2016"
+        imageName: "windows-latest"
+        vcpkgRsp: "vcpkg-x64-windows-static.txt"
+        cmakeChoice: CMakeSettingsJson
     maxParallel: 3
   pool:
     vmImage: $(imageName)
@@ -23,3 +29,20 @@ jobs:
   - task: CMake@1
     inputs:
       cmakeArgs: 
+  - task: Cache@2
+    displayName: 'Cache vcpkg artifacts'
+    inputs:
+      key: $(Build.SourcesDirectory)/$(vcpkgRsp) | "$(Build.SourcesDirectory)/.git/modules/vcpkg/HEAD" | "$(Agent.OS)"
+      path: '$(Build.SourcesDirectory)/vcpkg'
+  - task: run-vcpkg@0
+    displayName: 'Run vcpkg'
+    inputs:
+      vcpkgArguments: @$(Build.SourcesDirectory)/$(vcpkgRsp)
+      vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
+  - task: run-cmake@0
+    displayName: 'Run CMake with CMakeSettings.json'
+    inputs:
+      cmakeListsOrSettingsJson: $(cmakeChoice)
+      useVcpkgToolchainFile: true
+      cmakeAppendedArgs: '-GNinja'
+      configurationRegexFilter: 'x64.*'
