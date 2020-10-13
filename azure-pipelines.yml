@@ -25,10 +25,6 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
-  # C/C++ with GCC
-  - task: CMake@1
-    inputs:
-      cmakeArgs: 
   - task: Cache@2
     displayName: 'Cache vcpkg artifacts'
     inputs:
