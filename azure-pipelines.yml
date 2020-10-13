@@ -37,7 +37,7 @@ jobs:
   - task: run-vcpkg@0
     displayName: 'Run vcpkg'
     inputs:
-      vcpkgArguments: $(Build.SourcesDirectory)/$(vcpkgRsp)
+      vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
       vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
   - task: run-cmake@0
     displayName: 'Run CMake with CMakeSettings.json'
