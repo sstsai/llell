@@ -25,6 +25,8 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
+  - checkout: self
+    submodules: recursive
   - task: Cache@2
     displayName: 'Cache vcpkg artifacts'
     inputs:
@@ -40,5 +42,5 @@ jobs:
     inputs:
       cmakeListsOrSettingsJson: $(cmakeChoice)
       useVcpkgToolchainFile: true
-      cmakeAppendedArgs: '-GNinja'
+      cmakeAppendedArgs: '-- -v'
       configurationRegexFilter: 'x64.*'
