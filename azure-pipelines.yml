@@ -38,9 +38,8 @@ jobs:
       vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
       vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
   - task: run-cmake@0
-    displayName: 'Run CMake with CMakeSettings.json'
+    displayName: 'Run CMake'
     inputs:
       cmakeListsOrSettingsJson: $(cmakeChoice)
       useVcpkgToolchainFile: true
-      cmakeAppendedArgs: '-- -v'
       configurationRegexFilter: 'x64.*'

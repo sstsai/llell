@@ -13,3 +13,7 @@ target_compile_definitions(llell
   PUBLIC _USE_MATH_DEFINES _CRT_SECURE_NO_WARNINGS _WIN32_WINNT=0x0601
 )
 target_compile_features(llell PUBLIC cxx_std_20)
+if (UNIX AND NOT APPLE)
+    find_package(Threads REQUIRED)
+    target_link_libraries(llell PRIVATE Threads::Threads)
+endif ()
