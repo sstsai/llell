@@ -40,7 +40,7 @@ jobs:
   - task: run-cmake@0
     displayName: 'Run CMake'
     inputs:
-      cmakeListsOrSettingsJson: $(cmakeChoice)
+      cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
       useVcpkgToolchainFile: true
-      cmakeSettingsJsonPath: 'CMakeSettings.json'
-      configurationRegexFilter: 'x64.*'
+      buildDirectory: '$(Build.ArtifactStagingDirectory)'
+      buildWithCMakeArgs: '-- -v'
