@@ -42,4 +42,5 @@ jobs:
     inputs:
       cmakeListsOrSettingsJson: $(cmakeChoice)
       useVcpkgToolchainFile: true
+      cmakeSettingsJsonPath: 'CMakeSettings.json'
       configurationRegexFilter: 'x64.*'
