@@ -41,6 +41,7 @@ jobs:
     displayName: 'Run CMake'
     inputs:
       cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+      cmakeListsTxtPath: CMakeLists.txt
       useVcpkgToolchainFile: true
       buildDirectory: '$(Build.ArtifactStagingDirectory)'
       buildWithCMakeArgs: '-- -v'
