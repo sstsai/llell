@@ -13,7 +13,6 @@ stages:
       vcpkgRsp: "vcpkg-x64-windows-static.txt"
     pool:
       vmImage: windows-latest
-    variables:
     steps:
     - checkout: self
       submodules: recursive
