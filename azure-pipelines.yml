@@ -34,7 +34,7 @@ stages:
         buildDirectory: '$(Build.ArtifactStagingDirectory)'
         cmakeBuildType: 'Release'
         cmakeGenerator: 'Ninja'
-  - job: Linux x64 Clang
+  - job: Linux_GCC
     variables:
       vcpkgRsp: "vcpkg-x64-linux.txt"
       CC: gcc-10
