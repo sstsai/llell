@@ -5,43 +5,87 @@
 trigger:
 - master
 
-jobs:
-- job: Build
-  strategy:
-    matrix:
-      linux:
-        imageName: "ubuntu-20.04"
-        vcpkgRsp: "vcpkg-x64-linux.txt"
-        cmakeChoice: CMakeListsTxtAdvanced
-      mac:
-        imageName: "macos-latest"
-        vcpkgRsp: "vcpkg-x64-osx.txt"
-        cmakeChoice: CMakeListsTxtAdvanced
-      windows:
-        imageName: "windows-latest"
-        vcpkgRsp: "vcpkg-x64-windows-static.txt"
-        cmakeChoice: CMakeSettingsJson
-    maxParallel: 3
-  pool:
-    vmImage: $(imageName)
-  steps:
-  - checkout: self
-    submodules: recursive
-  - task: Cache@2
-    displayName: 'Cache vcpkg artifacts'
-    inputs:
-      key: $(Build.SourcesDirectory)/$(vcpkgRsp) | "$(Build.SourcesDirectory)/.git/modules/vcpkg/HEAD" | "$(Agent.OS)"
-      path: '$(Build.SourcesDirectory)/vcpkg'
-  - task: run-vcpkg@0
-    displayName: 'Run vcpkg'
-    inputs:
-      vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
-      vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
-  - task: run-cmake@0
-    displayName: 'Run CMake'
-    inputs:
-      cmakeListsOrSettingsJson: CMakeListsTxtBasic
-      useVcpkgToolchainFile: true
-      buildDirectory: '$(Build.ArtifactStagingDirectory)'
-      cmakeBuildType: 'Release'
-      cmakeGenerator: 'Ninja'
+stages:
+- stage: Build
+  jobs:
+  - job: Windows
+    variables:
+      vcpkgRsp: "vcpkg-x64-windows-static.txt"
+    pool:
+      vmImage: windows-latest
+    variables:
+    steps:
+    - checkout: self
+      submodules: recursive
+    - task: Cache@2
+      displayName: 'Cache vcpkg artifacts'
+      inputs:
+        key: $(Build.SourcesDirectory)/$(vcpkgRsp) | "$(Build.SourcesDirectory)/.git/modules/vcpkg/HEAD" | "$(Agent.OS)"
+        path: '$(Build.SourcesDirectory)/vcpkg'
+    - task: run-vcpkg@0
+      displayName: 'Run vcpkg'
+      inputs:
+        vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
+        vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
+    - task: run-cmake@0
+      displayName: 'Run CMake'
+      inputs:
+        cmakeListsOrSettingsJson: CMakeListsTxtBasic
+        useVcpkgToolchainFile: true
+        buildDirectory: '$(Build.ArtifactStagingDirectory)'
+        cmakeBuildType: 'Release'
+        cmakeGenerator: 'Ninja'
+  - job: Linux x64 Clang
+    variables:
+      vcpkgRsp: "vcpkg-x64-linux.txt"
+      CC: gcc-10
+      CXX: g++-10
+    pool:
+      vmImage: ubuntu-20.04
+    steps:
+    - checkout: self
+      submodules: recursive
+    - task: Cache@2
+      displayName: 'Cache vcpkg artifacts'
+      inputs:
+        key: $(Build.SourcesDirectory)/$(vcpkgRsp) | "$(Build.SourcesDirectory)/.git/modules/vcpkg/HEAD" | "$(Agent.OS)"
+        path: '$(Build.SourcesDirectory)/vcpkg'
+    - task: run-vcpkg@0
+      displayName: 'Run vcpkg'
+      inputs:
+        vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
+        vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
+    - task: run-cmake@0
+      displayName: 'Run CMake'
+      inputs:
+        cmakeListsOrSettingsJson: CMakeListsTxtBasic
+        useVcpkgToolchainFile: true
+        buildDirectory: '$(Build.ArtifactStagingDirectory)'
+        cmakeBuildType: 'Release'
+        cmakeGenerator: 'Ninja'
+  - job: MacOS
+    variables:
+      vcpkgRsp: "vcpkg-x64-osx.txt"
+    pool:
+      vmImage: macos-latest
+    steps:
+    - checkout: self
+      submodules: recursive
+    - task: Cache@2
+      displayName: 'Cache vcpkg artifacts'
+      inputs:
+        key: $(Build.SourcesDirectory)/$(vcpkgRsp) | "$(Build.SourcesDirectory)/.git/modules/vcpkg/HEAD" | "$(Agent.OS)"
+        path: '$(Build.SourcesDirectory)/vcpkg'
+    - task: run-vcpkg@0
+      displayName: 'Run vcpkg'
+      inputs:
+        vcpkgArguments: '@$(Build.SourcesDirectory)/$(vcpkgRsp)'
+        vcpkgDirectory: $(Build.SourcesDirectory)/vcpkg
+    - task: run-cmake@0
+      displayName: 'Run CMake'
+      inputs:
+        cmakeListsOrSettingsJson: CMakeListsTxtBasic
+        useVcpkgToolchainFile: true
+        buildDirectory: '$(Build.ArtifactStagingDirectory)'
+        cmakeBuildType: 'Release'
+        cmakeGenerator: 'Ninja'
