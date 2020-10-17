@@ -40,7 +40,8 @@ jobs:
   - task: run-cmake@0
     displayName: 'Run CMake'
     inputs:
-      cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+      cmakeListsOrSettingsJson: CMakeListsTxtBasic
       useVcpkgToolchainFile: true
       buildDirectory: '$(Build.ArtifactStagingDirectory)'
-      buildWithCMakeArgs: '-GNinja'
+      cmakeBuildType: 'Release'
+      cmakeGenerator: 'Ninja'
