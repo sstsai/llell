@@ -22,7 +22,7 @@ if (WIN32)
   target_compile_definitions(llell
     PUBLIC _CRT_SECURE_NO_WARNINGS _WIN32_WINNT=0x0601
   )
-  target_link_libraries(llell PRIVATE crypt32.lib)
+  target_link_libraries(llell PRIVATE OpenSSL::applink crypt32.lib)
 endif ()
 if (UNIX AND NOT APPLE)
     find_package(Threads REQUIRED)
