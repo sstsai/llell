@@ -13,7 +13,7 @@ target_include_directories(llell
     $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(llell PRIVATE doctest::doctest OpenSSL::SSL
-                                    OpenSSL::Crypto OpenSSL::applink
+                                    OpenSSL::Crypto
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES)
 target_compile_features(llell PUBLIC cxx_std_20)
