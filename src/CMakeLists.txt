@@ -12,8 +12,8 @@ target_include_directories(llell
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(llell
-  PRIVATE doctest::doctest
+target_link_libraries(llell PRIVATE doctest::doctest OpenSSL::SSL
+                                    OpenSSL::Crypto
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES)
 target_compile_features(llell PUBLIC cxx_std_20)
@@ -21,11 +21,6 @@ target_compile_features(llell PUBLIC cxx_std_20)
 if (WIN32)
   target_compile_definitions(llell
     PUBLIC _CRT_SECURE_NO_WARNINGS _WIN32_WINNT=0x0601
-  )
-  target_link_libraries(llell
-    PRIVATE ${BOOST_BEAST_LIB_DIRS}/lib/libssl.lib
-            ${BOOST_BEAST_LIB_DIRS}/lib/libcrypto.lib
-            Crypt32.lib
   )
 endif ()
 if (UNIX AND NOT APPLE)
