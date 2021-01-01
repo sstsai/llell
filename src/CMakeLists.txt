@@ -6,16 +6,17 @@ target_sources(llell
     "convert.h"
     "http.h"
  )
-target_include_directories(llell PRIVATE ${BOOST_BEAST_INCLUDE_DIRS})
 target_include_directories(llell
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(llell PRIVATE doctest::doctest OpenSSL::SSL
+target_link_libraries(llell PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
                                     OpenSSL::Crypto
 )
-target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES)
+target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES
+                                        BOOST_BEAST_USE_STD_STRING_VIEW
+)
 target_compile_features(llell PUBLIC cxx_std_20)
 
 if (WIN32)

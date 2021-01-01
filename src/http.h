@@ -39,7 +39,7 @@ inline auto get(Stream &stream, std::string_view host, std::string_view target,
 
     // Set up an HTTP GET request message
     http::request<http::string_body> req(
-        http::verb::get, boost::string_view(target.data(), target.size()),
+        http::verb::get, std::string_view(target.data(), target.size()),
         version);
     req.set(http::field::host, host);
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
@@ -107,7 +107,7 @@ inline auto get(Stream &stream, std::string_view host, std::string_view target,
 
     // Set up an HTTP GET request message
     http::request<http::string_body> req(
-        http::verb::get, boost::string_view(target.data(), target.size()),
+        http::verb::get, std::string_view(target.data(), target.size()),
         version);
     req.set(http::field::host, host);
     req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
