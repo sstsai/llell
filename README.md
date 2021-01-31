@@ -1,2 +1,1 @@
-# llell ![GitHub](https://img.shields.io/github/license/sstsai/llell)
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/sstsai/llell/hosted-pure-workflow/main)
+# llell ![License](https://img.shields.io/github/license/sstsai/llell) ![linux](https://badgen.net/github/checks/sstsai/llell/main/ubuntu?label=linux) ![windows](https://badgen.net/github/checks/sstsai/llell/main/windows) ![macos](https://badgen.net/github/checks/sstsai/llell/main/windows)
