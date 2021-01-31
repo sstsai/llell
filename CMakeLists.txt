@@ -8,6 +8,10 @@ endif ()
 if (APPLE)
     set(VCPKG_TARGET_TRIPLET "x64-osx" CACHE STRING "")
 endif ()
+set(CMAKE_TOOLCHAIN_FILE
+  ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
+  CACHE STRING "Vcpkg toolchain file")
+
 project(llell VERSION 1.0 LANGUAGES CXX)
 cmake_policy(SET CMP0074 NEW)
 #find_path(BOOST_BEAST_INCLUDE_DIRS "boost/beast.hpp")
