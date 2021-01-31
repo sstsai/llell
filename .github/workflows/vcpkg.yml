@@ -14,13 +14,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, macos-11.0, windows-latest]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
         include:
           - os: windows-latest
             triplet: x64-windows-static
           - os: ubuntu-20.04
             triplet: x64-linux
-          - os: macos-11.0
+          - os: macos-latest
             triplet: x64-osx
     env:
       # Indicates the CMake build directory where project files and binaries are being produced.
