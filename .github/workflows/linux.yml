@@ -1,8 +1,8 @@
 name: linux
 on: push
-runs-on: ubuntu-20.04
 jobs:
   ci:
+    runs-on: ubuntu-20.04
     env:
       # Indicates the CMake build directory where project files and binaries are being produced.
       CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/

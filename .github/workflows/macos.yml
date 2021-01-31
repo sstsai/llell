@@ -1,8 +1,8 @@
 name: macos
 on: push
-runs-on: macos-latest
 jobs:
   ci:
+    runs-on: macos-latest
     env:
       # Indicates the CMake build directory where project files and binaries are being produced.
       CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/
