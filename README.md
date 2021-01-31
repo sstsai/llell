@@ -1,1 +1,1 @@
-# llell ![License](https://img.shields.io/github/license/sstsai/llell) ![linux](https://badgen.net/github/checks/sstsai/llell/main/ubuntu?label=linux) ![windows](https://badgen.net/github/checks/sstsai/llell/main/windows) ![macos](https://badgen.net/github/checks/sstsai/llell/main/windows)
+# llell ![License](https://img.shields.io/github/license/sstsai/llell) ![linux ci](https://github.com/sstsai/llell/workflows/linux/badge.svg) ![windows ci](https://github.com/sstsai/llell/workflows/windows/badge.svg) ![macos ci](https://github.com/sstsai/llell/workflows/macos/badge.svg)

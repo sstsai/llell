@@ -1,32 +1,14 @@
-# Copyright (c) 2021 Luca Cappa
-# Released under the term specified in file LICENSE.txt
-# SPDX short identifier: MIT
-
-# A GitHub workflow using CMake, Ninja and vcpkg.
-# It is called "pure" because it is an example which minimizes the usage of custom GitHub actions, but leverages directly the tools that could be easily run on your development machines (i.e. CMake, vcpkg, Ninja).
-name: hosted-pure-workflow
-on: [push]
-
+name: macos
+on: push
+runs-on: macos-latest
 jobs:
-  job:
-    name: ${{ matrix.os }}-hosted-pure
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-20.04, macos-latest, windows-latest]
-        include:
-          - os: windows-latest
-            triplet: x64-windows-static
-          - os: ubuntu-20.04
-            triplet: x64-linux
-          - os: macos-latest
-            triplet: x64-osx
+  ci:
     env:
       # Indicates the CMake build directory where project files and binaries are being produced.
       CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_DEFAULT_TRIPLET: x64-osx
 
     steps:
       - uses: actions/checkout@v2
@@ -52,7 +34,7 @@ jobs:
           # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
           # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
           key: |
-            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
+            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ env.VCPKG_DEFAULT_TRIPLET }}-invalidate
       - name: Show content of workspace after cache has been restored
         run: find $RUNNER_WORKSPACE
         shell: bash
