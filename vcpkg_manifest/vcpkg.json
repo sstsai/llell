@@ -1,0 +1,9 @@
+{
+  "name": "llell",
+  "version-string": "0.0.1",
+  "dependencies": [
+    "boost-beast",
+    "boost-json",
+    "doctest"
+  ]
+}
