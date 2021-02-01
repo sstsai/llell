@@ -1,5 +1,0 @@
-boost-beast
-boost-json
-doctest
---triplet
-x64-osx
