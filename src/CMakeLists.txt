@@ -5,7 +5,7 @@ target_sources(llell
   PUBLIC
     "convert.h"
     "http.h"
- )
+  )
 target_include_directories(llell
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -16,6 +16,7 @@ target_link_libraries(llell PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES
                                         BOOST_BEAST_USE_STD_STRING_VIEW
+                                        DOCTEST_CONFIG_DISABLE
 )
 target_compile_features(llell PUBLIC cxx_std_20)
 
