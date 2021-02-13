@@ -9,7 +9,7 @@ target_compile_definitions(tests PUBLIC _USE_MATH_DEFINES
 )
 target_compile_features(tests PRIVATE cxx_std_20)
 target_link_libraries(tests PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
-                                    OpenSSL::Crypto
+                                    OpenSSL::Crypto asio tl::expected
 )
 if (WIN32)
   target_compile_definitions(tests

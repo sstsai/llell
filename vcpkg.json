@@ -2,9 +2,11 @@
   "name": "llell",
   "version-string": "0.0.1",
   "dependencies": [
+    "asio",
     "boost-beast",
     "boost-json",
-    "outcome",
-    "doctest"
+    "boost-variant2",
+    "doctest",
+    "tl-expected"
   ]
 }

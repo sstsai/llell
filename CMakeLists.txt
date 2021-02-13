@@ -14,10 +14,11 @@ set(CMAKE_TOOLCHAIN_FILE
 
 project(llell VERSION 1.0 LANGUAGES CXX)
 cmake_policy(SET CMP0074 NEW)
-#find_path(BOOST_BEAST_INCLUDE_DIRS "boost/beast.hpp")
+find_package(asio REQUIRED)
 find_package(Boost REQUIRED)
 find_package(doctest CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(tl-expected)
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(test)
