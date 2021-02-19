@@ -2,11 +2,24 @@
   "name": "llell",
   "version-string": "0.0.1",
   "dependencies": [
-    "asio",
     "boost-beast",
     "boost-json",
     "boost-variant2",
+    "boost-pfr",
+    "boost-type-index",
     "doctest",
+    "fmt",
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental",
+        "freetype",
+        "glfw-binding",
+        "opengl3-glbinding-binding",
+        "libigl-imgui"
+      ]
+    },
+    "nlohmann-json",
     "tl-expected"
   ]
 }
