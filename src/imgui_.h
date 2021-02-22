@@ -5,6 +5,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_fonts_droid_sans.h>
 #include <imgui_freetype.h>
+#include <implot.h>
 #include <memory>
 namespace imgui {
 struct destroy_context {
@@ -48,9 +49,18 @@ context make_context()
     ImGuiFreeType::BuildFontAtlas(io.Fonts, 0);
     return context(ctx);
 }
+struct destroy_plot_context {
+    void operator()(ImPlotContext *c) const { ImPlot::DestroyContext(c); }
+};
+using plot_context = std::unique_ptr<ImPlotContext, destroy_plot_context>;
+plot_context make_plot_context()
+{
+    return plot_context(ImPlot::CreateContext());
+}
 struct glfw_opengl {
 private:
     context ctx = make_context();
+    plot_context pctx = make_plot_context();
 
 public:
     glfw_opengl(GLFWwindow *window)

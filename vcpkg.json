@@ -19,6 +19,7 @@
         "libigl-imgui"
       ]
     },
+    "implot",
     "nlohmann-json",
     "tl-expected"
   ]

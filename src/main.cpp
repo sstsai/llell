@@ -22,6 +22,7 @@ int main(int, char *av[])
         imgui_ctx.render([]() {
             static bool show = true;
             ImGui::ShowDemoWindow(&show);
+            ImPlot::ShowDemoWindow(&show);
         });
         glfwPollEvents();
     }
