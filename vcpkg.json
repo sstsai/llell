@@ -6,7 +6,7 @@
     "boost-json",
     "boost-variant2",
     "boost-pfr",
-    "boost-type-index",
+    "boost-mp11",
     "doctest",
     "fmt",
     {
