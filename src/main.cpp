@@ -1,3 +1,4 @@
+#include "filedialog.h"
 #include "imgui_.h"
 #include "glfw.h"
 #include "opengl.h"
@@ -20,9 +21,16 @@ int main(int, char *av[])
     while (!glfwWindowShouldClose(main_win.get())) {
         gl::glClear(gl::GL_COLOR_BUFFER_BIT);
         imgui_ctx.render([]() {
-            static bool show = true;
-            ImGui::ShowDemoWindow(&show);
-            ImPlot::ShowDemoWindow(&show);
+            if (ImGui::Button("open")) {
+                auto file = filedialog::open();
+                if (file) {
+                }
+            }
+            static bool show = false;
+            if (show) {
+                ImGui::ShowDemoWindow(&show);
+                ImPlot::ShowDemoWindow(&show);
+            }
         });
         glfwPollEvents();
     }

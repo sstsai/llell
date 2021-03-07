@@ -13,6 +13,7 @@ target_link_libraries(tests PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
                                     OpenSSL::Crypto tl::expected imgui::imgui
                                     nlohmann_json fmt::fmt-header-only
                                     implot::implot
+                                    unofficial::nativefiledialog::nfd
 )
 if (WIN32)
   target_compile_definitions(tests
