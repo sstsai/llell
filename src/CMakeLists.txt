@@ -10,7 +10,7 @@ target_sources(llell
     "imgui_widgets.h"
     "opengl.h"
     "timeout.h"
- "filedialog.h")
+ "filedialog.h" "image.h" "uri.h")
 target_include_directories(llell
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -19,7 +19,7 @@ target_include_directories(llell
 target_link_libraries(llell PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
                                     OpenSSL::Crypto tl::expected imgui::imgui
                                     nlohmann_json fmt::fmt-header-only
-                                    implot::implot
+                                    implot::implot JPEG::JPEG
                                     unofficial::nativefiledialog::nfd
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES

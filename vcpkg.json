@@ -3,6 +3,7 @@
   "version-string": "0.0.1",
   "dependencies": [
     "boost-beast",
+    "boost-gil",
     "boost-json",
     "boost-variant2",
     "boost-pfr",
@@ -20,6 +21,7 @@
       ]
     },
     "implot",
+    "libjpeg-turbo",
     "nativefiledialog",
     "nlohmann-json",
     "tl-expected"
