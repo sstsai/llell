@@ -1,95 +1,90 @@
 #pragma once
 #include <string_view>
-#include <optional>
+#include <utility>
 namespace uri {
-struct state {
-    std::string_view remaining;
-    std::string_view parsed = std::string_view();
+struct parts {
+    std::string_view scheme;
+    std::string_view userinfo;
+    std::string_view host;
+    std::string_view port;
+    std::string_view path;
+    std::string_view query;
+    std::string_view fragment;
 };
-inline constexpr auto scheme(state uri) -> state
+inline constexpr auto parse(std::string_view uri,
+                            std::string_view::size_type pos = 0) -> parts
 {
-    constexpr auto delimiter = ':';
-    if (auto end = uri.remaining.find_first_of(delimiter);
-        end != std::string_view::npos) {
-        uri.parsed = uri.remaining.substr(0, end);
-        uri.remaining = uri.remaining.substr(end + sizeof(delimiter));
-    }
-    return uri;
-}
-inline constexpr auto userinfo(state uri) -> state
-{
-    constexpr auto delimiter = '@';
-    if (auto end = uri.remaining.find_first_of(delimiter);
-        end != std::string_view::npos) {
-        uri.parsed = uri.remaining.substr(0, end);
-        uri.remaining = uri.remaining.substr(end + sizeof(delimiter));
-    }
-    return uri;
-}
-inline constexpr auto host(state uri) -> state
-{
-    constexpr auto delimiter = ':';
-    if (auto end = uri.remaining.find_first_of(delimiter);
-        end != std::string_view::npos) {
-        uri.parsed = uri.remaining.substr(0, end);
-        uri.remaining = uri.remaining.substr(end + sizeof(delimiter));
-    } else {
-        uri.parsed = uri.remaining;
-        uri.remaining = std::string_view();
-    }
-    return uri;
-}
-inline constexpr auto port(state uri) -> state
-{
-    return state{uri.remaining, std::string_view()};
-}
-inline constexpr auto authority(state uri) -> state
-{
-    constexpr auto delimiter = std::string_view("//");
-    constexpr auto path_delimiter = '/';
-    if (uri.remaining.size() >= delimiter.size() &&
-        uri.remaining.substr(0, delimiter.size()) == delimiter) {
-        auto end =
-            uri.remaining.find_first_of(path_delimiter, delimiter.size());
-        if (end == std::string_view::npos) {
-            uri.parsed = uri.remaining.substr(delimiter.size());
-            uri.remaining = std::string_view();
-        } else {
-            uri.parsed =
-                uri.remaining.substr(delimiter.size(), end - delimiter.size());
-            uri.remaining = uri.remaining.substr(end);
+    auto epos = uri.find(':', pos);
+    if (epos == std::string_view::npos)
+        return {};
+    parts p;
+    p.scheme = uri.substr(pos, epos - pos);
+    pos = epos + 1;
+    if (uri.compare(pos, 2, "//") == 0) {
+        pos += 2;
+        epos = uri.find('@', pos);
+        if (epos != std::string_view::npos) {
+            p.userinfo = uri.substr(pos, epos - pos);
+            ++pos;
         }
-    }
-    return uri;
-}
-inline constexpr auto path(state uri) -> state
-{
-    constexpr auto delimiter = '?';
-    if (auto end = uri.remaining.find_first_of(delimiter);
-        end != std::string_view::npos) {
-        uri.parsed = uri.remaining.substr(0, end);
-        uri.remaining = uri.remaining.substr(end + sizeof(delimiter));
+        epos = uri.find_first_of(":/?#", pos);
+        if (epos == std::string_view::npos) {
+            p.host = uri.substr(pos);
+            return p;
+        }
+        p.host = uri.substr(pos, epos - pos);
+        if (uri[epos] == ':') {
+            pos = epos + 1;
+            epos = uri.find_first_of("/?#", pos);
+            if (epos == std::string_view::npos) {
+                p.port = uri.substr(pos);
+                return p;
+            }
+            p.port = uri.substr(pos, epos - pos);
+        }
     } else {
-        uri.parsed = uri.remaining;
-        uri.remaining = std::string_view();
+        epos = uri.find_first_of("/?#", pos);
+        if (epos == std::string_view::npos)
+            return p;
     }
-    return uri;
-}
-inline constexpr auto query(state uri) -> state
-{
-    constexpr auto delimiter = '#';
-    if (auto end = uri.remaining.find_first_of(delimiter);
-        end != std::string_view::npos) {
-        uri.parsed = uri.remaining.substr(0, end);
-        uri.remaining = uri.remaining.substr(end + sizeof(delimiter));
-    } else {
-        uri.parsed = uri.remaining;
-        uri.remaining = std::string_view();
+    if (uri[epos] == '/') {
+        pos = epos;
+        epos = uri.find_first_of("?#", pos);
+        if (epos == std::string_view::npos) {
+            p.path = uri.substr(pos);
+            return p;
+        }
+        p.path = uri.substr(pos, epos - pos);
     }
-    return uri;
-}
-inline constexpr auto fragment(state uri) -> state
-{
-    return state{uri.remaining, std::string_view()};
+    if (uri[epos] == '?') {
+        pos = epos + 1;
+        epos = uri.find_first_of("#", pos);
+        if (epos == std::string_view::npos) {
+            p.query = uri.substr(pos);
+            return p;
+        }
+        p.query = uri.substr(pos, epos - pos);
+    }
+    if (uri[epos] == '#') {
+        pos = epos + 1;
+        p.fragment = uri.substr(pos);
+    }
+    return p;
 }
 } // namespace uri
+#if __has_include(<doctest/doctest.h>)
+#include <doctest/doctest.h>
+TEST_CASE("uri parser")
+{
+    using namespace std::literals;
+    constexpr auto view = "http://www.google.com:80/hello?query#fragment"sv;
+    constexpr auto parts = uri::parse(view);
+    REQUIRE_EQ(parts.scheme, "http");
+    REQUIRE_EQ(parts.userinfo, "");
+    REQUIRE_EQ(parts.host, "www.google.com");
+    REQUIRE_EQ(parts.port, "80");
+    REQUIRE_EQ(parts.path, "/hello");
+    REQUIRE_EQ(parts.query, "query");
+    REQUIRE_EQ(parts.fragment, "fragment");
+}
+#endif

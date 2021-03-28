@@ -3,6 +3,7 @@
 #include "imgui_.h"
 #include "glfw.h"
 #include "opengl.h"
+#include "co.h"
 #include <glbinding/glbinding.h>
 
 int main(int, char *av[])

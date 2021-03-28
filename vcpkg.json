@@ -5,9 +5,10 @@
     "boost-beast",
     "boost-gil",
     "boost-json",
-    "boost-variant2",
-    "boost-pfr",
     "boost-mp11",
+    "boost-pfr",
+    "boost-spirit",
+    "boost-variant2",
     "doctest",
     "fmt",
     {

@@ -5,25 +5,17 @@
 #include <boost/gil/extension/io/jpeg.hpp>
 #include <string_view>
 #include <sstream>
+#include <fstream>
 namespace image {
 auto read_jpeg(std::string_view resource)
-    -> std::optional<boost::gil::rgb8_image_t>
+    -> std::optional<boost::gil::rgba8_image_t>
 {
     using namespace std::literals;
     constexpr auto http = "http"sv;
     constexpr auto https = "https"sv;
-    if (auto result = uri::scheme(uri::state{resource}); result.parsed.size()) {
-        auto scheme = result.parsed;
-        result = uri::authority(result);
-        if (!result.parsed.size())
-            return {};
-        auto path = result.remaining;
-        result = uri::userinfo(uri::state{result.parsed});
-        auto userinfo = result.parsed;
-        result = uri::host(result);
-        auto host = result.parsed;
-        result = uri::port(result);
-        auto port = result.parsed;
+    if (auto [scheme, userinfo, host, port, path, query, fragment] =
+            uri::parse(resource);
+        scheme.size()) {
         if (scheme == http) {
             namespace net = boost::asio;
             net::io_context ioc;
@@ -33,7 +25,7 @@ auto read_jpeg(std::string_view resource)
                 using namespace boost::gil;
                 std::stringstream in_buffer(
                     res.body(), std::ios_base::in | std::ios_base::binary);
-                auto img = rgb8_image_t{};
+                auto img = rgba8_image_t{};
                 read_and_convert_image(in_buffer, img, jpeg_tag());
                 return img;
             }
@@ -47,20 +39,21 @@ auto read_jpeg(std::string_view resource)
                 using namespace boost::gil;
                 std::stringstream in_buffer(
                     res.body(), std::ios_base::in | std::ios_base::binary);
-                auto img = rgb8_image_t{};
+                auto img = rgba8_image_t{};
                 read_and_convert_image(in_buffer, img, jpeg_tag());
+                //write_view("a.jpg", view(img), jpeg_tag());
                 return img;
             }
         }
     } else {
         using namespace boost::gil;
-        auto img = rgb8_image_t{};
+        auto img = rgba8_image_t{};
         read_and_convert_image(std::string(resource), img, jpeg_tag());
         return img;
     }
     return {};
 }
-auto glimage(boost::gil::rgb8_view_t const &image)
+auto glimage(boost::gil::rgba8_view_t const &image)
 {
     using namespace gl;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -70,7 +63,7 @@ auto glimage(boost::gil::rgb8_view_t const &image)
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     glTexImage2D(
         GL_TEXTURE_2D, 0, GL_RGBA, static_cast<gl::GLsizei>(image.width()),
-        static_cast<gl::GLsizei>(image.height()), 0, GL_RGB, GL_UNSIGNED_BYTE,
+        static_cast<gl::GLsizei>(image.height()), 0, GL_RGBA, GL_UNSIGNED_BYTE,
         boost::gil::interleaved_view_get_raw_data(image));
 }
 } // namespace image

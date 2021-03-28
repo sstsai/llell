@@ -10,7 +10,9 @@ target_sources(llell
     "imgui_widgets.h"
     "opengl.h"
     "timeout.h"
- "filedialog.h" "image.h" "uri.h")
+    "filedialog.h"
+    "image.h"
+    "uri.h")
 target_include_directories(llell
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
