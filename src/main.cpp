@@ -36,7 +36,7 @@ int main(int, char *av[])
                                       ImGui::GetMainViewport()->WorkSize.y));
             ImGui::InputText("url", url.data(), url.size());
             if (ImGui::Button("open")) {
-                auto img = image::read_jpeg(std::string_view(url.data()));
+                auto img = image::get(std::string_view(url.data()));
                 if (img) {
                     gl::glBindTexture(gl::GL_TEXTURE_2D,
                                       (gl::GLuint)texture.get());

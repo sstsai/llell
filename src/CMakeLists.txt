@@ -18,11 +18,13 @@ target_include_directories(llell
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>
 )
+
 target_link_libraries(llell PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
                                     OpenSSL::Crypto tl::expected imgui::imgui
                                     nlohmann_json fmt::fmt-header-only
-                                    implot::implot JPEG::JPEG
-                                    unofficial::nativefiledialog::nfd
+                                    implot::implot JPEG::JPEG png_static
+                                    unofficial::nativefiledialog::nfd TIFF::CXX
+                                    ${TIFFXX_LIBRARY}
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES
                                         BOOST_BEAST_USE_STD_STRING_VIEW
