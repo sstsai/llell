@@ -20,18 +20,17 @@ target_include_directories(llell
 )
 
 target_link_libraries(llell PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
-                                    OpenSSL::Crypto tl::expected imgui::imgui
+                                    OpenSSL::Crypto imgui::imgui tl::expected
                                     nlohmann_json fmt::fmt-header-only
-                                    implot::implot JPEG::JPEG png_static
-                                    unofficial::nativefiledialog::nfd TIFF::CXX
-                                    ${TIFFXX_LIBRARY}
+                                    implot::implot JPEG::JPEG png
+                                    unofficial::nativefiledialog::nfd
+                                    glbinding::glbinding
 )
 target_compile_definitions(llell PUBLIC _USE_MATH_DEFINES
-                                        BOOST_BEAST_USE_STD_STRING_VIEW
                                         DOCTEST_CONFIG_DISABLE
                                         GLFW_INCLUDE_NONE
 )
-target_compile_features(llell PUBLIC cxx_std_20)
+target_compile_features(llell PUBLIC cxx_std_23)
 
 if (WIN32)
   target_compile_definitions(llell

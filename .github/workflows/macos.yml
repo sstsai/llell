@@ -7,7 +7,8 @@ jobs:
       # Indicates the CMake build directory where project files and binaries are being produced.
       CMAKE_BUILD_DIR: ${{ github.workspace }}/builddir/
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
-      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      EXTERNAL_PACKAGES: ${{ github.workspace }}/external
+      VCPKG_ROOT: ${{ github.workspace }}/external/vcpkg
       VCPKG_DEFAULT_TRIPLET: x64-osx
 
     steps:
@@ -25,6 +26,7 @@ jobs:
           # The second path is the location of vcpkg (it contains the vcpkg executable and data files).
           # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
           path: |
+            ${{ env.EXTERNAL_PACKAGES }}
             ${{ env.CMAKE_BUILD_DIR }}/vcpkg_installed/
             ${{ env.VCPKG_ROOT }}
             !${{ env.VCPKG_ROOT }}/buildtrees

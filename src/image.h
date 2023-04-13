@@ -1,7 +1,6 @@
 #include "uri.h"
 #include "opengl.h"
 #include <boost/gil/extension/io/jpeg.hpp>
-#include <boost/gil/extension/io/tiff.hpp>
 #include <boost/gil/extension/io/bmp.hpp>
 #include <boost/gil/extension/io/png.hpp>
 #include <string_view>
@@ -20,8 +19,8 @@ inline auto get(std::string_view resource)
         auto mime = (*res)[boost::beast::http::field::content_type];
         if (mime == "image/jpeg")
             read_and_convert_image(in_buffer, img, jpeg_tag());
-        else if (mime == "image/tiff")
-            read_and_convert_image(in_buffer, img, tiff_tag());
+        // else if (mime == "image/tiff")
+        //     read_and_convert_image(in_buffer, img, tiff_tag());
         else if (mime == "image/bmp")
             read_and_convert_image(in_buffer, img, bmp_tag());
         else if (mime == "image/png")
@@ -36,8 +35,8 @@ inline auto get(std::string_view resource)
             auto img = rgba8_image_t{};
             if (file.extension() == ".jpeg" || file.extension() == ".jpg")
                 read_and_convert_image(file.c_str(), img, jpeg_tag());
-            else if (file.extension() == ".tiff" || file.extension() == ".tif")
-                read_and_convert_image(file.c_str(), img, tiff_tag());
+            // else if (file.extension() == ".tiff" || file.extension() == ".tif")
+            //     read_and_convert_image(file.c_str(), img, tiff_tag());
             else if (file.extension() == ".bmp")
                 read_and_convert_image(file.c_str(), img, bmp_tag());
             else if (file.extension() == ".png")

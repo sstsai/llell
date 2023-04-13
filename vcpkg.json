@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "llell",
   "version-string": "0.0.1",
   "dependencies": [
@@ -17,16 +18,17 @@
         "docking-experimental",
         "freetype",
         "glfw-binding",
-        "opengl3-glbinding-binding",
+        "opengl3-binding",
         "libigl-imgui"
       ]
     },
     "implot",
+    "glbinding",
     "libjpeg-turbo",
     "libpng",
     "nativefiledialog",
     "nlohmann-json",
-    "tiff",
+    "openssl",
     "tl-expected"
   ]
 }

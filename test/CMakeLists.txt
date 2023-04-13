@@ -5,14 +5,13 @@ target_sources(tests
 )
 target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_compile_definitions(tests PUBLIC _USE_MATH_DEFINES
-                                        BOOST_BEAST_USE_STD_STRING_VIEW
                                         GLFW_INCLUDE_NONE
 )
-target_compile_features(tests PRIVATE cxx_std_20)
+target_compile_features(tests PRIVATE cxx_std_23)
 target_link_libraries(tests PRIVATE doctest::doctest Boost::boost OpenSSL::SSL
-                                    OpenSSL::Crypto tl::expected imgui::imgui
+                                    OpenSSL::Crypto imgui::imgui tl::expected
                                     nlohmann_json fmt::fmt-header-only
-                                    implot::implot
+                                    implot::implot glbinding::glbinding
                                     unofficial::nativefiledialog::nfd
 )
 if (WIN32)
